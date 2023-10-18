@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ComponentVisualizer.h"
+#include "NewCppTutorial/MoveComponent.h"
 
 /**
  * 
  */
-class NEWCPPTUTORIALEDITOR_API MoveComponentVisualizer
+class NEWCPPTUTORIALEDITOR_API FMoveComponentVisualizer : public FComponentVisualizer
 {
 public:
-	MoveComponentVisualizer();
-	~MoveComponentVisualizer();
+	void DrawVisualization(const UActorComponent* Component, const FSceneView* View, FPrimitiveDrawInterface* PDI) override;
 };

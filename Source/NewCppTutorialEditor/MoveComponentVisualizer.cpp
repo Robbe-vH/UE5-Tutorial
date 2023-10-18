@@ -3,10 +3,15 @@
 
 #include "MoveComponentVisualizer.h"
 
-MoveComponentVisualizer::MoveComponentVisualizer()
-{
+void FMoveComponentVisualizer::DrawVisualization(const UActorComponent* Component, const FSceneView* View, FPrimitiveDrawInterface* PDI) {
+	const UMoveComponent* MoveComponent = Cast<UMoveComponent>(Component);
+
+	if (MoveComponent) {
+		PDI->DrawLine(
+			MoveComponent->GetComponentLocation(),
+			MoveComponent->GetComponentLocation() + MoveComponent->MoveOffset,
+			FLinearColor::Red,
+			SDPG_Foreground);
+	}
 }
 
-MoveComponentVisualizer::~MoveComponentVisualizer()
-{
-}
