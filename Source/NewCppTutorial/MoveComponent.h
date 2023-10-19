@@ -6,6 +6,9 @@
 #include "Components/SceneComponent.h"
 #include "MoveComponent.generated.h"
 
+UDELEGATE(BlueprintAuthorityOnly)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoveComponentReachEndPointSignature, bool, IsTopEndPoint);
+
 
 UCLASS( ClassGroup=(NewCppTutorial), meta=(BlueprintSpawnableComponent) )
 class NEWCPPTUTORIAL_API UMoveComponent : public USceneComponent
@@ -16,13 +19,21 @@ public:
 	// Sets default values for this component's properties
 	UMoveComponent();
 
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UFUNCTION(BlueprintCallable)
+	void EnableMovement(bool ShouldMove);
+
+	UFUNCTION(BlueprintCallable)
+	void ResetMovement();	
+	
+	UFUNCTION(BlueprintCallable)
+	void SetMoveDirection(int Direction);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	friend class FMoveComponentVisualizer;
@@ -33,6 +44,13 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float movementSpeed = 1.0f;
+
+	UPROPERTY(EditAnywhere)
+	bool MoveEnable = true;
+
+	// On extreme reached event
+	UPROPERTY(BlueprintAssignable)
+	FOnMoveComponentReachEndPointSignature OnEndpointReached;
 
 	// computed locations
 	FVector StartRelativeLocation;
